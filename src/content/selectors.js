@@ -44,5 +44,24 @@ export const SKIP_SELECTOR = [
   '[contenteditable="true"]',
 ].join(', ');
 
-/** Attribute that marks elements whose `dir` this extension manages. */
+/**
+ * Containers of chat messages. claude.ai sets its own first-strong-character
+ * `dir` on paragraphs in here (e.g. `<p dir="ltr">` for a Persian sentence that
+ * starts with an English word), so inside them the page's `dir` is overridden.
+ */
+export const MESSAGE_ROOT_SELECTOR = [
+  '[data-testid="user-message"]',
+  '.font-claude-response',
+  '.font-claude-message',
+  '.standard-markdown',
+  '.progressive-markdown',
+].join(', ');
+
+/**
+ * Marks elements whose `dir` this extension manages; its value is the page's
+ * original `dir` ('' if none), restored when the extension is turned off.
+ */
 export const MANAGED_ATTR = 'data-crtl';
+
+/** Marks an LTR list item kept on the side of its RTL list (see content.css). */
+export const LTR_ITEM_ATTR = 'data-crtl-ltr-item';

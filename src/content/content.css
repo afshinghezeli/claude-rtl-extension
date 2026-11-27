@@ -31,9 +31,10 @@ html.crtl-on :is(ul, ol)[data-crtl][dir='rtl'] {
   padding-inline-end: 0 !important;
 }
 
-/* Items of an RTL list keep their bullet on the right even when their text
-   is LTR; `plaintext` still orders punctuation by the item's own language. */
-html.crtl-on :is(ul, ol)[data-crtl][dir='rtl'] > li:not([dir]) {
+/* LTR items of an RTL list keep their bullet on the right; `plaintext` lets
+   their words and punctuation still be ordered as LTR text. Only applied to
+   items detected as LTR: on RTL items it would reapply the first-strong rule. */
+html.crtl-on li[data-crtl-ltr-item] {
   unicode-bidi: plaintext;
   text-align: right;
 }

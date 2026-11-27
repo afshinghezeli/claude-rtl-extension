@@ -41,15 +41,22 @@ otherwise, or `null` when there are no letters.
 - Processes **blocks** (`p`, `li`, `ul`, `ol`, headings, `blockquote`, table
   cells, …) as defined in `selectors.js`.
 - Skips anything inside `pre`, `code`, math, and the ProseMirror composer.
-- Never touches elements whose `dir` was set by the page; elements it manages
-  are marked with `data-crtl` so `stop()` can restore the page exactly.
-- A `MutationObserver` (childList + characterData, **not** attributes, so our
-  own writes can't loop) queues affected blocks and their block ancestors.
-  The queue is flushed once per animation frame; during streaming that's at
-  most ~60 cheap passes per second regardless of how many tokens arrive.
+- claude.ai sets its own `dir` on message paragraphs using the first-strong
+  rule (e.g. `<p dir="ltr">` for a Persian sentence starting with an English
+  word). Inside message roots (`MESSAGE_ROOT_SELECTOR`) that value is
+  overridden; elsewhere only `dir="auto"` is, and explicit page values are
+  respected. Managed elements carry `data-crtl="<original dir>"`, so `stop()`
+  restores the page exactly.
+- A `MutationObserver` (childList, characterData and the `dir` attribute)
+  queues affected blocks and their block ancestors. Watching `dir` lets us
+  re-apply when React rewrites it mid-stream; applying is idempotent, so our
+  own writes settle after one no-op pass. The queue is flushed once per
+  animation frame; during streaming that's at most ~60 cheap passes per
+  second regardless of how many tokens arrive.
 - Blocks are processed parents-first. An LTR block inside an RTL ancestor gets
-  an explicit `dir="ltr"` — except list items, which keep the list's direction
-  so their bullets stay inside the list.
+  an explicit `dir="ltr"` — except list items, which keep the list's `rtl` so
+  their bullets stay inside the list, and are flagged `data-crtl-ltr-item` so
+  CSS (`unicode-bidi: plaintext`) still orders their text as LTR.
 
 ## Composer
 

@@ -41,17 +41,29 @@ describe('DirectionEngine', () => {
     expect(document.getElementById('en').getAttribute('dir')).toBe('ltr');
   });
 
-  it('keeps LTR items of an RTL list on the list side (bullet stays inside)', () => {
+  it('keeps LTR items of an RTL list on the list side and flags them', () => {
     document.body.innerHTML = `
       <ul id="list">
-        <li>مورد اول</li>
+        <li id="fa"><strong>Worklet:</strong> تابع‌های کوتاه جاوااسکریپتی که می‌تونن روی UI thread اجرا بشن.</li>
         <li>مورد دوم</li>
         <li id="en">English item</li>
       </ul>`;
     engine.start('auto');
 
+    const fa = document.getElementById('fa');
+    const en = document.getElementById('en');
     expect(document.getElementById('list').getAttribute('dir')).toBe('rtl');
-    expect(document.getElementById('en').hasAttribute('dir')).toBe(false);
+    // Persian item starting with an English word: RTL, not flagged
+    // (the flag's `unicode-bidi: plaintext` would reorder it LTR).
+    expect(fa.getAttribute('dir')).toBe('rtl');
+    expect(fa.hasAttribute('data-crtl-ltr-item')).toBe(false);
+    // English item: bullet stays on the list side, flagged for LTR text order.
+    expect(en.getAttribute('dir')).toBe('rtl');
+    expect(en.hasAttribute('data-crtl-ltr-item')).toBe(true);
+
+    engine.stop();
+    expect(en.hasAttribute('dir')).toBe(false);
+    expect(en.hasAttribute('data-crtl-ltr-item')).toBe(false);
   });
 
   it('never touches code, the composer, or elements the page owns', () => {
@@ -95,6 +107,51 @@ describe('DirectionEngine', () => {
 
     engine.setMode('auto');
     expect(document.getElementById('p').hasAttribute('dir')).toBe(false);
+  });
+
+  it('overrides the page\'s dir="auto" (first-strong rule) and restores it on stop', () => {
+    document.body.innerHTML = `
+      <p id="fa" dir="auto">react-native-reanimated یک کتابخونه‌ی انیمیشن برای React Native هست</p>
+      <p id="en" dir="auto">سلام is how you say hello in Persian, a very common greeting</p>
+      <p id="num" dir="auto">123</p>`;
+    engine.start('auto');
+
+    expect(document.getElementById('fa').getAttribute('dir')).toBe('rtl');
+    expect(document.getElementById('en').getAttribute('dir')).toBe('ltr');
+    expect(document.getElementById('num').getAttribute('dir')).toBe('auto');
+
+    engine.stop();
+    for (const id of ['fa', 'en', 'num']) {
+      expect(document.getElementById(id).getAttribute('dir')).toBe('auto');
+      expect(document.getElementById(id).hasAttribute('data-crtl')).toBe(false);
+    }
+  });
+
+  it("overrides claude.ai's own first-strong dir inside messages and restores it on stop", () => {
+    // Real markup from claude.ai: Claude marks this Persian paragraph LTR.
+    document.body.innerHTML = `
+      <div class="standard-markdown">
+        <p id="p" dir="ltr"><strong>react-native-reanimated</strong> یک کتابخونه‌ی انیمیشن برای React Native هست که شرکت Software Mansion می‌سازدش.</p>
+      </div>`;
+    engine.start('auto');
+    const p = document.getElementById('p');
+    expect(p.getAttribute('dir')).toBe('rtl');
+
+    engine.stop();
+    expect(p.getAttribute('dir')).toBe('ltr');
+    expect(p.hasAttribute('data-crtl')).toBe(false);
+  });
+
+  it('re-applies when the page rewrites dir (e.g. a React re-render while streaming)', async () => {
+    document.body.innerHTML = `
+      <div class="standard-markdown"><p id="p" dir="ltr">Claude یک دستیار هوش مصنوعی است</p></div>`;
+    engine.start('auto');
+    const p = document.getElementById('p');
+    expect(p.getAttribute('dir')).toBe('rtl');
+
+    p.setAttribute('dir', 'ltr');
+    await settle(engine);
+    expect(p.getAttribute('dir')).toBe('rtl');
   });
 
   it('removes everything it added on stop', () => {

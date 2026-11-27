@@ -1,5 +1,11 @@
 import { detectDirection } from '../shared/direction.js';
-import { BLOCK_SELECTOR, MANAGED_ATTR, SKIP_SELECTOR } from './selectors.js';
+import {
+  BLOCK_SELECTOR,
+  LTR_ITEM_ATTR,
+  MANAGED_ATTR,
+  MESSAGE_ROOT_SELECTOR,
+  SKIP_SELECTOR,
+} from './selectors.js';
 
 /**
  * Watches the page and sets `dir` on every text block according to its content.
@@ -7,9 +13,13 @@ import { BLOCK_SELECTOR, MANAGED_ATTR, SKIP_SELECTOR } from './selectors.js';
  * Design notes:
  * - Mutations are batched into one animation frame, so streaming responses
  *   (hundreds of characterData mutations per second) stay cheap.
- * - Only `childList` and `characterData` are observed, never attributes, so
- *   our own `dir` writes cannot cause feedback loops.
- * - We never touch elements whose `dir` was set by the page itself.
+ * - `dir` attribute changes are observed too, because claude.ai sets its own
+ *   (first-strong-character) `dir` on message paragraphs and may rewrite it
+ *   while streaming. Applying is idempotent, so our own writes settle after
+ *   one extra no-op pass instead of looping.
+ * - Inside chat messages the page's `dir` is only a guess and is overridden;
+ *   elsewhere only `dir="auto"` is. The original value is kept in
+ *   MANAGED_ATTR and restored on stop().
  */
 export class DirectionEngine {
   /** @type {Set<Element>} */
@@ -51,6 +61,8 @@ export class DirectionEngine {
         childList: true,
         subtree: true,
         characterData: true,
+        attributes: true,
+        attributeFilter: ['dir'],
       });
     }
     this.processAll();
@@ -61,10 +73,7 @@ export class DirectionEngine {
     this.#observer?.disconnect();
     this.#observer = null;
     this.#pending.clear();
-    for (const el of this.document.querySelectorAll(`[${MANAGED_ATTR}]`)) {
-      el.removeAttribute('dir');
-      el.removeAttribute(MANAGED_ATTR);
-    }
+    for (const el of this.document.querySelectorAll(`[${MANAGED_ATTR}]`)) restore(el);
   }
 
   /** @param {'auto' | 'rtl'} mode */
@@ -136,32 +145,58 @@ export class DirectionEngine {
     if (el.closest(SKIP_SELECTOR)) return false;
 
     const managed = el.hasAttribute(MANAGED_ATTR);
-    if (!managed && el.hasAttribute('dir')) return false; // the page owns this one
+    const original = managed ? el.getAttribute(MANAGED_ATTR) : (el.getAttribute('dir') ?? '');
+    if (!managed && !isOverridable(el, original)) return false;
 
-    const before = managed ? el.getAttribute('dir') : null;
     const detected = this.#mode === 'rtl' ? 'rtl' : detectDirection(el.textContent);
 
+    /** @type {string | null} */
     let next = null;
     if (detected === 'rtl') {
       next = 'rtl';
-    } else if (detected === 'ltr' && el.parentElement?.closest('[dir="rtl"]')) {
-      // Inside an RTL ancestor an LTR block has to say so explicitly —
-      // except list items: flipping one would move its bullet outside the
-      // list. They keep the list's side; content.css fixes their bidi.
-      next = isItemOfRtlList(el) ? null : 'ltr';
+    } else if (isItemOfRtlList(el)) {
+      // An LTR item keeps its list's side, otherwise its bullet would jump
+      // outside the list. It is flagged so content.css can order its
+      // punctuation as LTR text (unicode-bidi: plaintext).
+      next = detected === 'ltr' || original ? 'rtl' : null;
+    } else if (detected === 'ltr' && (original || el.parentElement?.closest('[dir="rtl"]'))) {
+      // Replacing a page value, or inside an RTL ancestor: LTR must be explicit.
+      next = 'ltr';
     }
 
-    if (next === before) return false;
+    // Only ever true while we manage the element, so restore() can drop it.
+    el.toggleAttribute(LTR_ITEM_ATTR, next !== null && detected === 'ltr' && isItemOfRtlList(el));
+
+    const current = el.getAttribute('dir');
+    const target = next ?? (original || null);
+    if (target === current) return false;
 
     if (next) {
       el.setAttribute('dir', next);
-      el.setAttribute(MANAGED_ATTR, '');
+      el.setAttribute(MANAGED_ATTR, original);
     } else {
-      el.removeAttribute('dir');
-      el.removeAttribute(MANAGED_ATTR);
+      restore(el);
     }
     return true;
   }
+}
+
+/** Put back whatever `dir` the page had before we touched the element. */
+function restore(el) {
+  const original = el.getAttribute(MANAGED_ATTR);
+  if (original) el.setAttribute('dir', original);
+  else el.removeAttribute('dir');
+  el.removeAttribute(MANAGED_ATTR);
+  el.removeAttribute(LTR_ITEM_ATTR);
+}
+
+/**
+ * Whether we may replace the `dir` the page put on an element.
+ * @param {Element} el
+ * @param {string} pageDir  '' when the element has no `dir`.
+ */
+function isOverridable(el, pageDir) {
+  return pageDir === '' || pageDir === 'auto' || el.closest(MESSAGE_ROOT_SELECTOR) !== null;
 }
 
 /** @param {Element} el */

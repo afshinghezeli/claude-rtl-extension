@@ -1,0 +1,113 @@
+{
+  "extName": {
+    "message": "Claude RTL — راست‌چین و فونت فارسی برای Claude"
+  },
+  "extDescription": {
+    "message": "پشتیبانی راست‌به‌چپ برای گفتگوهای فارسی، عربی، عبری و اردو در claude.ai با فونت‌های زیبا و قابل تنظیم."
+  },
+  "actionTitle": {
+    "message": "تنظیمات Claude RTL"
+  },
+  "cmdToggle": {
+    "message": "روشن یا خاموش کردن Claude RTL"
+  },
+  "enabled": {
+    "message": "فعال"
+  },
+  "statusOn": {
+    "message": "فعال در claude.ai"
+  },
+  "statusOff": {
+    "message": "متوقف"
+  },
+  "sectionDirection": {
+    "message": "جهت متن"
+  },
+  "directionAuto": {
+    "message": "تشخیص خودکار"
+  },
+  "directionRtl": {
+    "message": "همیشه راست‌چین"
+  },
+  "directionAutoHint": {
+    "message": "هر پاراگراف بر اساس زبان خودش چیده می‌شود؛ متن انگلیسی چپ‌چین می‌ماند."
+  },
+  "directionRtlHint": {
+    "message": "همهٔ پیام‌ها راست‌چین نمایش داده می‌شوند. کدها همیشه چپ‌چین می‌مانند."
+  },
+  "rtlInput": {
+    "message": "جهت خودکار هنگام تایپ"
+  },
+  "rtlInputHint": {
+    "message": "هر خط از کادر پیام بر اساس زبان خودش چیده می‌شود."
+  },
+  "sectionFont": {
+    "message": "فونت"
+  },
+  "fontFamily": {
+    "message": "قلم"
+  },
+  "customFont": {
+    "message": "نام فونت نصب‌شده"
+  },
+  "customFontPlaceholder": {
+    "message": "مثلاً IRANSans"
+  },
+  "fontScope": {
+    "message": "اعمال روی"
+  },
+  "scopeMessages": {
+    "message": "پیام‌ها"
+  },
+  "scopeAll": {
+    "message": "کل رابط کاربری"
+  },
+  "fontSize": {
+    "message": "اندازهٔ متن"
+  },
+  "lineHeight": {
+    "message": "فاصلهٔ خطوط"
+  },
+  "lineHeightDefault": {
+    "message": "پیش‌فرض"
+  },
+  "previewRtl": {
+    "message": "سلام! این متن با فونت انتخابی شما نمایش داده می‌شود."
+  },
+  "previewLtr": {
+    "message": "Hello Claude — mixed text stays readable."
+  },
+  "reset": {
+    "message": "بازنشانی"
+  },
+  "github": {
+    "message": "گیت‌هاب"
+  },
+  "reportIssue": {
+    "message": "گزارش مشکل"
+  },
+  "font_default": {
+    "message": "پیش‌فرض Claude"
+  },
+  "font_tahoma": {
+    "message": "Tahoma (سیستمی)"
+  },
+  "font_system": {
+    "message": "فونت سیستم"
+  },
+  "font_custom": {
+    "message": "دلخواه (فونت نصب‌شده)"
+  },
+  "font_vazirmatn": {
+    "message": "وزیرمتن"
+  },
+  "font_shabnam": {
+    "message": "شبنم"
+  },
+  "font_sahel": {
+    "message": "ساحل"
+  },
+  "font_samim": {
+    "message": "صمیم"
+  }
+}

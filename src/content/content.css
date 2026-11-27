@@ -1,0 +1,129 @@
+/*
+ * Claude RTL — page styles.
+ *
+ * Every rule is gated by a class on <html> set by style-manager.js, so the
+ * extension has zero visual effect when disabled. `dir` attributes on text
+ * blocks are set by direction-engine.js and marked with [data-crtl].
+ *
+ * If claude.ai changes its markup, the message-root selectors below and
+ * src/content/selectors.js are the places to update.
+ *
+ * Message roots:
+ *   [data-testid='user-message']  your messages
+ *   .font-claude-response         Claude's responses (current UI)
+ *   .font-claude-message          Claude's responses (older UI)
+ *   .standard-markdown, .progressive-markdown  rendered markdown containers
+ *   .ProseMirror                  the message composer
+ */
+
+/* ------------------------------------------------------------------ */
+/* Direction                                                           */
+/* ------------------------------------------------------------------ */
+
+html.crtl-on :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, th, td, dt, dd)[data-crtl] {
+  text-align: start;
+}
+
+/* Lists: move indentation and markers to the right side. Logical and
+   physical paddings cascade together, so this also beats `pl-*` utilities. */
+html.crtl-on :is(ul, ol)[data-crtl][dir='rtl'] {
+  padding-inline-start: 1.75em !important;
+  padding-inline-end: 0 !important;
+}
+
+/* Items of an RTL list keep their bullet on the right even when their text
+   is LTR; `plaintext` still orders punctuation by the item's own language. */
+html.crtl-on :is(ul, ol)[data-crtl][dir='rtl'] > li:not([dir]) {
+  unicode-bidi: plaintext;
+  text-align: right;
+}
+
+html.crtl-on blockquote[data-crtl][dir='rtl'] {
+  border-inline-end-width: 0 !important;
+  border-inline-start: 3px solid color-mix(in srgb, currentColor 25%, transparent) !important;
+  padding-inline-start: 1em !important;
+  padding-inline-end: 0 !important;
+}
+
+/* Code and math always stay left-to-right. */
+html.crtl-on pre {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+html.crtl-on [dir='rtl'] :is(code, kbd, samp) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+html.crtl-on :is(.katex, .katex-display, math) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* ------------------------------------------------------------------ */
+/* Composer (ProseMirror) — CSS only, its DOM is never mutated.        */
+/* `unicode-bidi: plaintext` + `text-align: start` aligns every        */
+/* paragraph according to its own content, live while typing.         */
+/* ------------------------------------------------------------------ */
+
+html.crtl-on.crtl-input .ProseMirror :is(p, li, h1, h2, h3, h4, h5, h6, blockquote),
+html.crtl-on.crtl-input textarea {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
+html.crtl-on.crtl-force-rtl .ProseMirror,
+html.crtl-on.crtl-force-rtl textarea {
+  direction: rtl;
+}
+
+/* ------------------------------------------------------------------ */
+/* Font                                                                */
+/* ------------------------------------------------------------------ */
+
+html.crtl-font-messages
+  :is(
+    [data-testid='user-message'],
+    .font-claude-response,
+    .font-claude-message,
+    .standard-markdown,
+    .progressive-markdown,
+    .ProseMirror
+  ),
+html.crtl-font-messages
+  :is(
+    [data-testid='user-message'],
+    .font-claude-response,
+    .font-claude-message,
+    .standard-markdown,
+    .progressive-markdown,
+    .ProseMirror
+  )
+  *:not(pre, pre *, code, code *, kbd, samp, .katex, .katex *, svg, svg *, [class*='font-mono']),
+html.crtl-font-all body,
+html.crtl-font-all
+  body
+  *:not(pre, pre *, code, code *, kbd, samp, .katex, .katex *, svg, svg *, [class*='font-mono']) {
+  font-family: var(--crtl-font-family) !important;
+}
+
+/* Size: applied to top-level message roots only (they never nest), and
+   text blocks inherit it so utilities like `text-[15px]` don't pin them. */
+html.crtl-scale :is([data-testid='user-message'], .font-claude-response, .font-claude-message) {
+  font-size: calc(var(--crtl-font-scale) * 1em) !important;
+}
+
+html.crtl-scale
+  :is([data-testid='user-message'], .font-claude-response, .font-claude-message)
+  :is(p, li, blockquote, td, th) {
+  font-size: inherit !important;
+}
+
+html.crtl-lh [data-testid='user-message'],
+html.crtl-lh
+  :is([data-testid='user-message'], .font-claude-response, .font-claude-message)
+  :is(p, li, blockquote, td, th, h1, h2, h3, h4, h5, h6) {
+  line-height: var(--crtl-line-height) !important;
+}

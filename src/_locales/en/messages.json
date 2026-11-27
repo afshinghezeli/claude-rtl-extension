@@ -1,0 +1,120 @@
+{
+  "extName": {
+    "message": "Claude RTL — Right-to-Left & Fonts for Claude",
+    "description": "Extension name (max 75 chars)"
+  },
+  "extDescription": {
+    "message": "Right-to-left support for Persian, Arabic, Hebrew and Urdu chats on claude.ai, with beautiful customizable fonts.",
+    "description": "Store description (max 132 chars)"
+  },
+  "actionTitle": {
+    "message": "Claude RTL settings",
+    "description": "Toolbar button tooltip"
+  },
+  "cmdToggle": {
+    "message": "Turn Claude RTL on or off",
+    "description": "Keyboard shortcut description"
+  },
+  "enabled": {
+    "message": "Enabled",
+    "description": "Master switch label"
+  },
+  "statusOn": {
+    "message": "Active on claude.ai"
+  },
+  "statusOff": {
+    "message": "Paused"
+  },
+  "sectionDirection": {
+    "message": "Direction"
+  },
+  "directionAuto": {
+    "message": "Auto-detect"
+  },
+  "directionRtl": {
+    "message": "Always RTL"
+  },
+  "directionAutoHint": {
+    "message": "Each paragraph follows its own language — English stays left-to-right."
+  },
+  "directionRtlHint": {
+    "message": "Every message is shown right-to-left. Code always stays left-to-right."
+  },
+  "rtlInput": {
+    "message": "Auto-direction while typing"
+  },
+  "rtlInputHint": {
+    "message": "Each line of the message box follows its own language."
+  },
+  "sectionFont": {
+    "message": "Font"
+  },
+  "fontFamily": {
+    "message": "Typeface"
+  },
+  "customFont": {
+    "message": "Installed font name"
+  },
+  "customFontPlaceholder": {
+    "message": "e.g. IRANSans"
+  },
+  "fontScope": {
+    "message": "Apply to"
+  },
+  "scopeMessages": {
+    "message": "Messages"
+  },
+  "scopeAll": {
+    "message": "Entire interface"
+  },
+  "fontSize": {
+    "message": "Text size"
+  },
+  "lineHeight": {
+    "message": "Line height"
+  },
+  "lineHeightDefault": {
+    "message": "Default"
+  },
+  "previewRtl": {
+    "message": "سلام! این متن با فونت انتخابی شما نمایش داده می‌شود.",
+    "description": "Sample RTL text in the preview"
+  },
+  "previewLtr": {
+    "message": "Hello Claude — mixed text stays readable.",
+    "description": "Sample LTR text in the preview"
+  },
+  "reset": {
+    "message": "Reset to defaults"
+  },
+  "github": {
+    "message": "GitHub"
+  },
+  "reportIssue": {
+    "message": "Report an issue"
+  },
+  "font_default": {
+    "message": "Claude default"
+  },
+  "font_tahoma": {
+    "message": "Tahoma (system)"
+  },
+  "font_system": {
+    "message": "System UI"
+  },
+  "font_custom": {
+    "message": "Custom (installed font)"
+  },
+  "font_vazirmatn": {
+    "message": "Vazirmatn"
+  },
+  "font_shabnam": {
+    "message": "Shabnam"
+  },
+  "font_sahel": {
+    "message": "Sahel"
+  },
+  "font_samim": {
+    "message": "Samim"
+  }
+}

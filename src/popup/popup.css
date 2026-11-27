@@ -1,0 +1,390 @@
+/* Bundled fonts, registered under the same family names the content script uses. */
+@font-face {
+  font-family: 'CRTL Vazirmatn';
+  src: url('../fonts/vazirmatn/Vazirmatn-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CRTL Shabnam';
+  src: url('../fonts/shabnam/Shabnam.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'CRTL Shabnam';
+  src: url('../fonts/shabnam/Shabnam-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'CRTL Sahel';
+  src: url('../fonts/sahel/Sahel.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'CRTL Sahel';
+  src: url('../fonts/sahel/Sahel-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'CRTL Samim';
+  src: url('../fonts/samim/Samim.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'CRTL Samim';
+  src: url('../fonts/samim/Samim-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #faf9f5;
+  --surface: #ffffff;
+  --border: #e8e4da;
+  --text: #29261b;
+  --muted: #6f6b60;
+  --accent: #c96442;
+  --accent-contrast: #ffffff;
+  --track: #d9d4c7;
+  --focus: color-mix(in srgb, var(--accent) 45%, transparent);
+
+  --radius: 10px;
+  --space: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1f1e1b;
+    --surface: #2a2925;
+    --border: #3b3a35;
+    --text: #f2f0e8;
+    --muted: #a7a398;
+    --accent: #d97757;
+    --track: #4a4842;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 13px;
+}
+
+body {
+  width: 340px;
+  margin: 0;
+  padding: var(--space);
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    'CRTL Vazirmatn',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 2px var(--space);
+}
+
+.logo {
+  border-radius: 7px;
+  flex: none;
+}
+
+.header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.header h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Cards */
+main {
+  display: grid;
+  gap: 10px;
+  transition: opacity 0.15s ease;
+}
+
+body.is-disabled main {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.card {
+  display: grid;
+  gap: 10px;
+  padding: var(--space);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* Fields */
+.field {
+  display: grid;
+  gap: 5px;
+}
+
+.field-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+output {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+select,
+input[type='text'] {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: inherit;
+  font: inherit;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+:is(select, input, button, a):focus-visible,
+.segmented input:focus-visible + span,
+.switch input:focus-visible + .switch-track {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Rows with a trailing switch */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.row-text {
+  display: grid;
+  flex: 1;
+}
+
+/* Segmented control */
+.segmented {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  padding: 3px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.segmented label {
+  position: relative;
+}
+
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.segmented span {
+  display: block;
+  padding: 5px 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--muted);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.segmented input:checked + span {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  cursor: pointer;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.switch-track {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--track);
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.switch-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transition: transform 0.15s ease;
+}
+
+.switch input:checked + .switch-track {
+  background: var(--accent);
+}
+
+.switch input:checked + .switch-track::after {
+  transform: translateX(16px);
+}
+
+[dir='rtl'] .switch input:checked + .switch-track::after {
+  transform: translateX(-16px);
+}
+
+.switch.small .switch-track {
+  width: 32px;
+  height: 18px;
+}
+
+.switch.small .switch-track::after {
+  width: 12px;
+  height: 12px;
+}
+
+.switch.small input:checked + .switch-track::after {
+  transform: translateX(14px);
+}
+
+[dir='rtl'] .switch.small input:checked + .switch-track::after {
+  transform: translateX(-14px);
+}
+
+/* Preview */
+.preview {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  font-size: calc(1.05rem * var(--preview-scale, 1));
+  line-height: var(--preview-line-height, 1.6);
+}
+
+.preview p[dir='ltr'] {
+  color: var(--muted);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: var(--space) 2px 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.footer a,
+.link-button {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer a:hover,
+.link-button:hover {
+  color: var(--accent);
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.footer-links {
+  display: flex;
+  gap: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

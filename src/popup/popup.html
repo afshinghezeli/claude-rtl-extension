@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude RTL</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <img class="logo" src="../icons/icon-48.png" width="28" height="28" alt="" />
+      <div class="header-text">
+        <h1>Claude RTL</h1>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+      <label class="switch" title="">
+        <input type="checkbox" id="enabled" role="switch" />
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="visually-hidden" data-i18n="enabled">Enabled</span>
+      </label>
+    </header>
+
+    <main id="settings">
+      <section class="card" aria-labelledby="direction-title">
+        <h2 id="direction-title" data-i18n="sectionDirection">Direction</h2>
+
+        <div class="segmented" role="radiogroup" aria-labelledby="direction-title">
+          <label>
+            <input type="radio" name="direction" value="auto" />
+            <span data-i18n="directionAuto">Auto-detect</span>
+          </label>
+          <label>
+            <input type="radio" name="direction" value="rtl" />
+            <span data-i18n="directionRtl">Always RTL</span>
+          </label>
+        </div>
+        <p class="hint" id="direction-hint"></p>
+
+        <label class="row">
+          <span class="row-text">
+            <span data-i18n="rtlInput">Auto-direction while typing</span>
+            <span class="hint" data-i18n="rtlInputHint"
+              >Each line of the message box follows its own language.</span
+            >
+          </span>
+          <span class="switch small">
+            <input type="checkbox" id="rtlInput" role="switch" />
+            <span class="switch-track" aria-hidden="true"></span>
+          </span>
+        </label>
+      </section>
+
+      <section class="card" aria-labelledby="font-title">
+        <h2 id="font-title" data-i18n="sectionFont">Font</h2>
+
+        <label class="field">
+          <span data-i18n="fontFamily">Typeface</span>
+          <select id="fontFamily"></select>
+        </label>
+
+        <label class="field" id="customFontField" hidden>
+          <span data-i18n="customFont">Installed font name</span>
+          <input
+            type="text"
+            id="customFont"
+            maxlength="64"
+            spellcheck="false"
+            autocomplete="off"
+            data-i18n-placeholder="customFontPlaceholder"
+            placeholder="e.g. IRANSans"
+          />
+        </label>
+
+        <div class="field">
+          <span id="scope-title" data-i18n="fontScope">Apply to</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="scope-title">
+            <label>
+              <input type="radio" name="fontScope" value="messages" />
+              <span data-i18n="scopeMessages">Messages</span>
+            </label>
+            <label>
+              <input type="radio" name="fontScope" value="all" />
+              <span data-i18n="scopeAll">Entire interface</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="field">
+          <span class="field-head">
+            <span data-i18n="fontSize">Text size</span>
+            <output id="fontScaleValue" for="fontScale"></output>
+          </span>
+          <input type="range" id="fontScale" />
+        </label>
+
+        <label class="field">
+          <span class="field-head">
+            <span data-i18n="lineHeight">Line height</span>
+            <output id="lineHeightValue" for="lineHeight"></output>
+          </span>
+          <input type="range" id="lineHeight" />
+        </label>
+
+        <div class="preview" id="preview" dir="auto">
+          <p data-i18n="previewRtl">سلام! این متن با فونت انتخابی شما نمایش داده می‌شود.</p>
+          <p dir="ltr" data-i18n="previewLtr">Hello Claude — mixed text stays readable.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <button type="button" class="link-button" id="reset" data-i18n="reset">
+        Reset to defaults
+      </button>
+      <span class="footer-links">
+        <a
+          href="https://github.com/afshinghezeli/claude-rtl-extension"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="github"
+          >GitHub</a
+        >
+        <span aria-hidden="true">·</span>
+        <a
+          href="https://github.com/afshinghezeli/claude-rtl-extension/issues/new/choose"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="reportIssue"
+          >Report an issue</a
+        >
+        <span aria-hidden="true">·</span>
+        <span id="version"></span>
+      </span>
+    </footer>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

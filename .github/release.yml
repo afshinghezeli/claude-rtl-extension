@@ -1,0 +1,15 @@
+# Categories for automatically generated release notes.
+changelog:
+  exclude:
+    labels: ['ignore-for-release']
+  categories:
+    - title: ✨ Features
+      labels: ['enhancement', 'font', 'translation']
+    - title: 🐛 Bug fixes
+      labels: ['bug', 'selectors']
+    - title: 📝 Documentation
+      labels: ['documentation']
+    - title: 🔧 Maintenance
+      labels: ['dependencies', 'ci', 'chore']
+    - title: Other changes
+      labels: ['*']

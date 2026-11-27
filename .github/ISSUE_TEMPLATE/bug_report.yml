@@ -1,0 +1,73 @@
+name: 🐛 Bug report
+description: Something looks wrong or doesn't work on claude.ai
+title: '[Bug]: '
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please **remove any private conversation content** from text and screenshots.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a chat on claude.ai
+        2. Send "..."
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample text (optional)
+      description: If a paragraph gets the wrong direction, paste a non-private example here.
+      render: text
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag and drop images here.
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: Shown at the bottom of the settings popup.
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 131 on Windows 11
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Direction mode
+      options:
+        - Auto-detect
+        - Always RTL
+  - type: input
+    id: font
+    attributes:
+      label: Selected font
+      placeholder: Vazirmatn
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I reloaded the claude.ai tab after installing/updating the extension.
+          required: true
+        - label: I searched existing issues and this is not a duplicate.
+          required: true

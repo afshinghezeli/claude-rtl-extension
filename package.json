@@ -1,0 +1,56 @@
+{
+  "name": "claude-rtl-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension that adds right-to-left (RTL) support and customizable fonts to claude.ai for Persian, Arabic, Hebrew and Urdu.",
+  "keywords": [
+    "chrome-extension",
+    "claude",
+    "rtl",
+    "right-to-left",
+    "persian",
+    "farsi",
+    "arabic",
+    "hebrew",
+    "urdu",
+    "fonts"
+  ],
+  "homepage": "https://github.com/afshinghezeli/claude-rtl-extension#readme",
+  "bugs": {
+    "url": "https://github.com/afshinghezeli/claude-rtl-extension/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afshinghezeli/claude-rtl-extension.git"
+  },
+  "license": "MIT",
+  "author": "Afshin Ghezeli",
+  "type": "module",
+  "engines": {
+    "node": ">=22.2"
+  },
+  "scripts": {
+    "dev": "node scripts/build.mjs --watch",
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/build.mjs --zip",
+    "icons": "node scripts/generate-icons.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^5.1.2",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.10.1",
+    "vitest": "^5.1.2"
+  }
+}

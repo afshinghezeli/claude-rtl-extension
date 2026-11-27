@@ -1,6 +1,6 @@
 {
   "name": "claude-rtl-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Chrome extension that adds right-to-left (RTL) support and customizable fonts to claude.ai for Persian, Arabic, Hebrew and Urdu.",
   "keywords": [
